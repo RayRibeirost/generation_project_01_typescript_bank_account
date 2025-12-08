@@ -96,7 +96,7 @@ export class Account {
         console.log(`Agência: ${this._bankBranch}`);
         console.log(`Tipo da Conta: ${accountType}`);
         console.log(`Titular: ${this._accountHolder}`);
-        console.log(`Saldo: ${this._balance}`);
+        console.log(`Saldo: $${this._balance.toFixed(2)}`);
     };
 
 

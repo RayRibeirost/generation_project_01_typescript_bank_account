@@ -1,8 +1,18 @@
 import readline from "readline-sync";
 import { colors } from "./src/util/Colors";
+import { Account } from "./src/model/Account";
 
 export function main() {
     let option: number;
+
+    // Test Object
+    const account: Account = new Account(1, 123, 1, "Adriana", 10000);
+    account.viewAccount();
+    account.withdraw(10500);
+    account.viewAccount();
+    account.deposit(5000);
+    account.viewAccount();
+
     while(true) {
         console.log(colors.bg.black, colors.fg.yellow, "***************************************************************");
         console.log("                                                               ");
