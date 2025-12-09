@@ -1,17 +1,26 @@
 import readline from "readline-sync";
 import { colors } from "./src/util/Colors";
-import { Account } from "./src/model/Account";
+import { CheckingAccount } from "./src/model/CheckingAccount";
+import { SavingsAccount } from "./src/model/SavingsAccount";
 
 export function main() {
     let option: number;
 
-    // Test Object
-    const account: Account = new Account(1, 123, 1, "Adriana", 10000);
-    account.viewAccount();
-    account.withdraw(10500);
-    account.viewAccount();
-    account.deposit(5000);
-    account.viewAccount();
+    // Test Objects
+    
+    const checkingAccountTest: CheckingAccount = new CheckingAccount(2, 123, 1, "Mariana", 15000, 1000);
+    checkingAccountTest.viewAccount();
+    checkingAccountTest.withdraw(2000);
+    checkingAccountTest.viewAccount();
+    checkingAccountTest.deposit(1000);
+    checkingAccountTest.viewAccount();
+
+    const savingsAccountTest: SavingsAccount = new SavingsAccount(3, 123, 2, "Victor", 1000, 10);
+    savingsAccountTest.viewAccount();
+    savingsAccountTest.withdraw(200);
+    savingsAccountTest.viewAccount();
+    savingsAccountTest.deposit(1000);
+    savingsAccountTest.viewAccount();
 
     while(true) {
         console.log(colors.bg.black, colors.fg.yellow, "***************************************************************");

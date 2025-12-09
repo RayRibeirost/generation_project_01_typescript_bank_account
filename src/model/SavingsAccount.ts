@@ -1,6 +1,6 @@
 import { Account } from "./Account";
 
-export class CheckingAccount extends Account {
+export class SavingsAccount extends Account {
     
     private _anniversary: number;
 
@@ -32,6 +32,6 @@ export class CheckingAccount extends Account {
 
     public viewAccount(): void {
         super.viewAccount();
-        console.log(`Dia do aniversário: ${this._anniversary.toFixed(2)}`); 
+        console.log(`Dia do aniversário: ${this._anniversary}`); 
     }
 }
