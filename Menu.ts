@@ -2,11 +2,16 @@ import readline from "readline-sync";
 import { colors } from "./src/util/Colors";
 import { CheckingAccount } from "./src/model/CheckingAccount";
 import { SavingsAccount } from "./src/model/SavingsAccount";
+import { AccountController } from "./src/controller/AccountController";
 
 export function main() {
-    let option: number;
+    let accounts: AccountController = new AccountController();
+    let option, accNumber, bankBranch, accountType, balance, limit, anniversary: number;
+    let accountHolder: string;
+    const accounTypes: string[] = ["Conta Corrente", "Conta Poupança"];
 
-    // Test Objects
+
+    /* // Test Objects
     
     const checkingAccountTest: CheckingAccount = new CheckingAccount(2, 123, 1, "Mariana", 15000, 1000);
     checkingAccountTest.viewAccount();
@@ -21,7 +26,7 @@ export function main() {
     savingsAccountTest.viewAccount();
     savingsAccountTest.deposit(1000);
     savingsAccountTest.viewAccount();
-
+ */
     while(true) {
         console.log(colors.bg.black, colors.fg.yellow, "***************************************************************");
         console.log("                                                               ");
@@ -57,6 +62,7 @@ export function main() {
                 break;
             case 2:
                 console.log(colors.fg.whitestrong, "\n\nListar todas as Contas\n\n", colors.reset);
+                accounts.listAllAccounts();
                 keyPress();
                 break;
             case 3:
