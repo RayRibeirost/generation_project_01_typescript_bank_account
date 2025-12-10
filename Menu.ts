@@ -57,7 +57,34 @@ export function main() {
 
         switch(option) {
             case 1:
+
                 console.log(colors.fg.whitestrong, "\n\nCriar Conta\n\n", colors.reset);
+                
+                console.log("Digite o número da agência: ")
+                bankBranch = readline.questionInt("");
+                
+                console.log("Digite o nome do titular da conta: ");
+                accountHolder = readline.question("");
+                
+                console.log("Digite o tipo da conta: ");
+                accountType = readline.keyInSelect(accounTypes, "", {cancel: false}) + 1;
+                
+                console.log("Digite o saldo da conta (R$): ");
+                balance = readline.questionFloat("");
+
+                switch(accountType) {
+                    case 1:
+                        console.log("Digite o Limite da Conta (R$): ")
+                        limit = readline.questionFloat("");
+                        accounts.registerAccount(new CheckingAccount(accounts.generateNumber(), bankBranch, accountType, accountHolder, balance, limit));
+                        break;
+                    case 2:
+                        console.log("Digite o dia do aniversário da Conta Poupança: ");
+                        anniversary = readline.questionInt("");
+                        accounts.registerAccount(new SavingsAccount(accounts.generateNumber(), bankBranch, accountType, accountHolder, balance, anniversary));
+                        break;
+                }
+
                 keyPress();
                 break;
             case 2:
