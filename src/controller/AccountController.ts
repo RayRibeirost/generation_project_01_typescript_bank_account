@@ -41,7 +41,9 @@ export class AccountController implements AccountRepository {
     generateNumber(): number {
         return ++this.lastAccountNumber;
     }
-    searchInCollection(accNumber: number): Account | void {
-        
+    searchInCollection(accNumber: number): Account | null {
+        let findAccount = this.accountList.find(acc => acc.accountNumber === accNumber);
+        if (findAccount) return findAccount;
+        return null;
     }
 }
