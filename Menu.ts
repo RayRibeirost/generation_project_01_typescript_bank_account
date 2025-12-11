@@ -6,7 +6,15 @@ import { AccountController } from "./src/controller/AccountController";
 
 export function main() {
     let accounts: AccountController = new AccountController();
-    let option, accNumber, bankBranch, accountType, balance, limit, anniversary: number;
+    let option: number,
+      accNumber: number,
+      bankBranch: number,
+      accountType: number,
+      balance: number,
+      limit: number,
+      anniversary: number,
+      amount: number,
+      accNumberOrigin: number;
     let accountHolder: string;
     const accounTypes: string[] = ["Conta Corrente", "Conta Poupança"];
 
@@ -149,6 +157,15 @@ export function main() {
                 break;
             case 6:
                 console.log(colors.fg.whitestrong, "\n\nSaque\n\n", colors.reset);
+
+                console.log("Digite o número da conta: ");
+                accNumber = readline.questionInt("");
+
+                console.log("\nDigite o valor do saque (R$): ");
+                amount = readline.questionFloat("");
+
+                accounts.withdraw(accNumber, amount);
+
                 keyPress();
                 break;
             case 7:

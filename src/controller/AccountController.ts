@@ -24,26 +24,19 @@ export class AccountController implements AccountRepository {
         if (searchAccount != null) {
             this.accountList[this.accountList.indexOf(searchAccount)] = account;
             console.log(colors.fg.green, `\nA conta número: ${account.accountNumber} foi atualizada com sucesso!`, colors.reset);
-        } else {
-            console.log(colors.fg.red, `\nA conta número: ${account.accountNumber} não foi encontrada!`, colors.reset);
-        }
+        } else console.log(colors.fg.red, `\nA conta número: ${account.accountNumber} não foi encontrada!`, colors.reset);
     }
     deleteAccount(accNumber: number): void {
         let searchAccount = this.searchInCollection(accNumber);
         if (searchAccount != null) {
             this.accountList.splice(this.accountList.indexOf(searchAccount), 1);
             console.log(colors.fg.green, `\nA conta número: ${accNumber} foi atualizada com sucesso!`, colors.reset);
-        } else {
-            console.log(colors.fg.red, `\nA conta número: ${accNumber} não foi encontrada!`, colors.reset);
-        }
+        } else console.log(colors.fg.red, `\nA conta número: ${accNumber} não foi encontrada!`, colors.reset); 
     }
     withdraw(accNumber: number, amount: number): void {
         let account = this.searchInCollection(accNumber);
-        if (account != null) {
-            if(account.withdraw(amount) == true) console.log(colors.fg.green, `\nO saque na conta ${accNumber} foi efetuado com sucesso`, colors.reset);
-        } else {
-            console.log(colors.fg.red, `\nA conta número: ${accNumber} não foi encontrada!`, colors.reset);
-        }
+        if (account != null) if(account.withdraw(amount) == true) console.log(colors.fg.green, `\nO saque na conta ${accNumber} foi efetuado com sucesso`, colors.reset);
+        else console.log(colors.fg.red, `\nA conta número: ${accNumber} não foi encontrada!`, colors.reset);
     }
     deposit(accNumber: number, amount: number): void {
         throw new Error("Method not implemented.");
