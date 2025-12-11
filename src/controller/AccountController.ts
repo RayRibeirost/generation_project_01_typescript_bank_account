@@ -30,7 +30,7 @@ export class AccountController implements AccountRepository {
         let searchAccount = this.searchInCollection(accNumber);
         if (searchAccount != null) {
             this.accountList.splice(this.accountList.indexOf(searchAccount), 1);
-            console.log(colors.fg.green, `\nA conta número: ${accNumber} foi atualizada com sucesso!`, colors.reset);
+            console.log(colors.fg.green, `\nA conta número: ${accNumber} foi apagada com sucesso!`, colors.reset);
         } else console.log(colors.fg.red, `\nA conta número: ${accNumber} não foi encontrada!`, colors.reset); 
     }
     withdraw(accNumber: number, amount: number): void {
