@@ -46,7 +46,14 @@ export class AccountController implements AccountRepository {
         } else console.log(colors.fg.red, `\nA conta número: ${accNumber} não foi encontrada!`);
     }
     transfer(accNumberOrigin: number, accNumberDest: number, amount: number): void {
-        throw new Error("Method not implemented.");
+        let accOrigin = this.searchInCollection(accNumberOrigin);
+        let accDest = this.searchInCollection(accNumberDest);
+        if(accOrigin != null && accDest != null) {
+            if(accOrigin.withdraw(amount) == true) {
+                accDest.deposit(amount);
+                console.log(colors.fg.green, `\nA transferência da conta número: ${accNumberOrigin} para a conta número: ${accNumberDest} foi efetuada com sucesso!`);
+            }
+        } else console.log(colors.fg.red, `\nA conta número: ${accNumberOrigin} e/ou a conta número: ${accNumberDest} não foram encontradas!`);
     }
     generateNumber(): number {
         return ++this.lastAccountNumber;

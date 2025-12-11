@@ -14,7 +14,7 @@ export function main() {
       limit: number,
       anniversary: number,
       amount: number,
-      accNumberOrigin: number;
+      accNumberDest: number;
     let accountHolder: string;
     const accounTypes: string[] = ["Conta Corrente", "Conta Poupança"];
 
@@ -183,6 +183,18 @@ export function main() {
                 break;
             case 8:
                 console.log(colors.fg.whitestrong, "\n\nTransferência entre Contas\n\n", colors.reset);
+
+                console.log("Digite o número da conta de origem: ");
+                accNumber = readline.questionInt("");
+
+                console.log("Digite o número da conta de destino: ");
+                accNumberDest = readline.questionInt("");
+
+                console.log("\nDigite o valor do depósito (R$): ");
+                amount = readline.questionFloat("");
+
+                accounts.transfer(accNumber, accNumberDest, amount);
+
                 keyPress();
                 break;
             default:
