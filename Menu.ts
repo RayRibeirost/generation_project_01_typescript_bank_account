@@ -103,6 +103,39 @@ export function main() {
                 break;
             case 4:
                 console.log(colors.fg.whitestrong, "\n\nAtualizar dados da Conta\n\n", colors.reset);
+
+                console.log("Digite o número da conta: ");
+                accNumber = readline.questionInt("");
+
+                let account = accounts.searchInCollection(accNumber);
+
+                if (account != null) {
+                    
+                    console.log("Digite o número da agência: ");
+                    bankBranch = readline.questionInt("");
+                    console.log("Digite o nome do titular da conta: ");
+                    accountHolder = readline.question("");
+                    accountType = account.accountType;
+                    console.log("\nDigite o saldo da conta (R$): ");
+                    balance = readline.questionFloat("");
+
+                    switch(accountType) {
+                        case 1:
+                            console.log("Digite o Limite da Conta (R$): ")
+                            limit = readline.questionFloat("");
+                            accounts.updateAccount(new CheckingAccount(accNumber, bankBranch, accountType, accountHolder, balance, limit));
+                            break;
+                        case 2:
+                            console.log("Digite o dia do aniversário da Conta Poupança: ");
+                            anniversary = readline.questionInt("");
+                            accounts.updateAccount(new SavingsAccount(accNumber, bankBranch, accountType, accountHolder, balance, anniversary));
+                            break;
+                    }
+
+                } else {
+                    console.log(colors.fg.red, `\nA conta número: ${accNumber} não foi encontrada`);
+                }
+
                 keyPress();
                 break;
             case 5:

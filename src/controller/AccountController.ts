@@ -20,7 +20,13 @@ export class AccountController implements AccountRepository {
         console.log(colors.fg.green, `\nA conta número ${account.accountNumber} foi criada com sucesso!`, colors.reset);
     }
     updateAccount(account: Account): void {
-        throw new Error("Method not implemented.");
+        let searchAccount = this.searchInCollection(account.accountNumber);
+        if (searchAccount != null) {
+            this.accountList[this.accountList.indexOf(searchAccount)] = account;
+            console.log(colors.fg.green, `\nA conta número: ${account.accountNumber} foi atualizada com sucesso!`, colors.reset);
+        } else {
+            console.log(colors.fg.red, `\nA conta número: ${account.accountNumber} não foi encontrada!`, colors.reset);
+        }
     }
     deleteAccount(accNumber: number): void {
         throw new Error("Method not implemented.");
