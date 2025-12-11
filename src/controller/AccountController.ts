@@ -39,7 +39,11 @@ export class AccountController implements AccountRepository {
         else console.log(colors.fg.red, `\nA conta número: ${accNumber} não foi encontrada!`, colors.reset);
     }
     deposit(accNumber: number, amount: number): void {
-        throw new Error("Method not implemented.");
+        let account = this.searchInCollection(accNumber);
+        if (account != null) {
+            account.deposit(amount);
+            console.log(colors.fg.green, `\nO depósito na conta número: ${accNumber} foi efetuado com sucesso!`);
+        } else console.log(colors.fg.red, `\nA conta número: ${accNumber} não foi encontrada!`);
     }
     transfer(accNumberOrigin: number, accNumberDest: number, amount: number): void {
         throw new Error("Method not implemented.");

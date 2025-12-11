@@ -170,6 +170,15 @@ export function main() {
                 break;
             case 7:
                 console.log(colors.fg.whitestrong, "\n\nDepósito\n\n", colors.reset);
+                
+                console.log("Digite o número da conta: ");
+                accNumber = readline.questionInt("");
+                
+                console.log("\nDigite o valor do depósito (R$): ");
+                amount = readline.questionFloat("");
+                
+                accounts.deposit(accNumber, amount);
+                
                 keyPress();
                 break;
             case 8:
