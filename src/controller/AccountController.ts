@@ -29,7 +29,13 @@ export class AccountController implements AccountRepository {
         }
     }
     deleteAccount(accNumber: number): void {
-        throw new Error("Method not implemented.");
+        let searchAccount = this.searchInCollection(accNumber);
+        if (searchAccount != null) {
+            this.accountList.splice(this.accountList.indexOf(searchAccount), 1);
+            console.log(colors.fg.green, `\nA conta número: ${accNumber} foi atualizada com sucesso!`, colors.reset);
+        } else {
+            console.log(colors.fg.red, `\nA conta número: ${accNumber} não foi encontrada!`, colors.reset);
+        }
     }
     withdraw(accNumber: number, amount: number): void {
         let account = this.searchInCollection(accNumber);

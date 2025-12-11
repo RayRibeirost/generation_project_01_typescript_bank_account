@@ -140,6 +140,11 @@ export function main() {
                 break;
             case 5:
                 console.log("\n\nApagar uma Conta\n\n", colors.reset);
+
+                console.log("Digite o número da conta: ");
+                accNumber = readline.questionInt("");
+                accounts.deleteAccount(accNumber);
+
                 keyPress();
                 break;
             case 6:
