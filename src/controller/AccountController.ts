@@ -9,10 +9,11 @@ export class AccountController implements AccountRepository {
     
     // Methods
     findAccountNumber(accNumber: number): void {
-        throw new Error("Method not implemented.");
+        let searchAccount = this.searchInCollection(accNumber);
+        searchAccount != null ? searchAccount.viewAccount() : console.log(colors.fg.red, `\nA conta numero: ${accNumber} não foi encontrada!`, colors.reset);
     }
     listAllAccounts(): void {
-        this.accountList.forEach(account => account.viewAccount());
+        this.accountList.forEach((account : Account) => account.viewAccount());
     }
     registerAccount(account: Account): void {
         this.accountList.push(account);
@@ -42,8 +43,7 @@ export class AccountController implements AccountRepository {
         return ++this.lastAccountNumber;
     }
     searchInCollection(accNumber: number): Account | null {
-        let findAccount = this.accountList.find(acc => acc.accountNumber === accNumber);
-        if (findAccount) return findAccount;
-        return null;
+        let findAccount: Account | undefined = this.accountList.find((acc : Account) => acc.accountNumber === accNumber);
+        return findAccount ? findAccount : null;
     }
 }
