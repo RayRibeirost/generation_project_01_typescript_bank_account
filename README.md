@@ -1,895 +1,223 @@
-<div align="center">
+# 🏦 Bank Account Management System
 
-# 🏦 TypeScript Banking System
+> **Professional CLI-based banking domain project designed to demonstrate strong Object-Oriented Programming, domain modeling, and clean layered architecture within a financial context.**
 
-### Object-Oriented Banking Application with CLI Interface
-
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-18.0+-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
-[![OOP](https://img.shields.io/badge/Paradigm-OOP-blue?style=for-the-badge)]()
-[![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
-
-[Features](#-key-features) • [Architecture](#-architecture) • [Installation](#-installation) • [Usage](#-usage) • [Tech Stack](#-tech-stack) • [API Documentation](#-api-documentation)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)
+![Node.js](https://img.shields.io/badge/Node.js-18+-green)
+![OOP](https://img.shields.io/badge/Paradigm-Object--Oriented-important)
+![CLI](https://img.shields.io/badge/Interface-CLI-lightgrey)
 
 ---
 
-</div>
+## 📌 Executive Summary
 
-## 📋 Overview
+This project is a **Bank Account Management System** implemented as a **Command-Line Interface (CLI)** application using **TypeScript**. It models a realistic banking domain with different account types, balances, and operations, enforcing business rules through a clean and expressive **Object-Oriented design**.
 
-A comprehensive, console-based banking system built with TypeScript, demonstrating advanced Object-Oriented Programming (OOP) principles and SOLID design patterns. This application simulates real-world banking operations through a robust CLI interface, showcasing enterprise-level architecture suitable for financial technology applications.
-
-Developed as part of the Generation Brasil bootcamp program, this project emphasizes type safety, inheritance hierarchies, polymorphism, and clean code practices that are essential in mission-critical banking software.
-
-### 🎯 Project Highlights
-
-- **Pure TypeScript Implementation**: Leveraging strong typing for reliability
-- **Object-Oriented Design**: Demonstrating inheritance, polymorphism, and encapsulation
-- **SOLID Principles**: Clean architecture following industry best practices
-- **Banking Operations**: Complete CRUD operations for account management
-- **Interactive CLI**: User-friendly menu-driven interface
-- **Type Safety**: Compile-time error detection and prevention
-- **Scalable Architecture**: Easily extensible for additional account types
+The system emphasizes **architecture, domain modeling, and separation of concerns**, reflecting patterns commonly used in **fintechs, banks, and enterprise financial systems**.
 
 ---
 
-## ✨ Key Features
+## 🎯 Project Purpose
 
-### 🏛️ Banking Operations
+This project was built to:
 
-<table>
-<tr>
-<td width="50%">
+- Demonstrate solid **Object-Oriented Programming (OOP)** fundamentals
+- Model a **financial domain** using inheritance and polymorphism
+- Apply a **layered architecture** with explicit responsibility boundaries
+- Encapsulate business rules within domain entities
+- Serve as a strong foundation for enterprise-grade system evolution
 
-**Account Management**
-- 🆕 **Create Account**: Register new checking or savings accounts
-- 🔍 **Search Account**: Find accounts by number
-- 📋 **List All Accounts**: View all registered accounts
-- 🔄 **Update Account**: Modify account holder information
-- 🗑️ **Delete Account**: Close accounts permanently
-
-</td>
-<td width="50%">
-
-**Financial Transactions**
-- 💰 **Deposit**: Add funds to accounts
-- 💸 **Withdraw**: Remove funds with balance validation
-- 🔄 **Transfer**: Move money between accounts
-- 📊 **Check Balance**: View current account balance
-- 📈 **Interest Calculation**: Automatic interest for savings accounts
-
-</td>
-</tr>
-</table>
-
-### 🏗️ Account Types
-
-#### 💳 Checking Account
-- Standard banking account for daily transactions
-- Overdraft limit support
-- Unlimited withdrawals and deposits
-- No interest accumulation
-- Maintenance fee structure ready
-
-#### 💎 Savings Account
-- Interest-bearing account
-- Configurable interest rate
-- Withdrawal restrictions (optional)
-- Higher minimum balance requirements
-- Monthly interest compounding
-
-### 🎨 User Experience
-
-- **Interactive Menu System**: Navigate through banking operations intuitively
-- **Input Validation**: Robust validation preventing invalid operations
-- **Error Handling**: Graceful error messages and recovery
-- **Transaction Confirmation**: Safety checks before critical operations
-- **Real-time Feedback**: Immediate operation status updates
-- **Data Persistence Ready**: Architecture prepared for database integration
+The CLI interface was deliberately chosen to prioritize **business logic and architectural clarity**.
 
 ---
 
-## 🏗️ Architecture
+## 🧠 Business Context
 
-### Design Patterns & Principles
+Banking systems operate under strict constraints related to consistency, correctness, and traceability. Even basic operations such as deposits and withdrawals must respect domain rules and invariants.
 
-#### 🎯 SOLID Principles Implementation
+This system reflects real-world banking concerns by:
 
-<table>
-<tr>
-<td width="50%">
+- Explicitly modeling **different bank account types**
+- Centralizing balance validation and state changes inside domain entities
+- Avoiding procedural logic and anemic models
 
-**Single Responsibility**
-- Each class has one well-defined purpose
-- Account handles only account operations
-- Controller manages only UI logic
+---
 
-**Open/Closed**
-- Open for extension (new account types)
-- Closed for modification (base classes stable)
+## 🏗️ Architecture Overview
 
-**Liskov Substitution**
-- Derived accounts work wherever base Account works
-- Polymorphic behavior guaranteed
+The application follows a **classic layered architecture**, commonly adopted in financial and enterprise systems:
 
-</td>
-<td width="50%">
+```
+┌────────────────────┐
+│   CLI Interface    │
+└─────────┬──────────┘
+          │
+┌─────────▼──────────┐
+│   Controller       │  → Orchestrates user actions and workflows
+└─────────┬──────────┘
+          │
+┌─────────▼──────────┐
+│   Domain Model     │  → Business rules and entities
+└─────────┬──────────┘
+          │
+┌─────────▼──────────┐
+│   Repository       │  → Persistence abstraction (in-memory)
+└────────────────────┘
+```
 
-**Interface Segregation**
-- Clients not forced to depend on unused interfaces
-- Specific interfaces for specific operations
+### Architectural Characteristics
 
-**Dependency Inversion**
-- High-level modules don't depend on low-level modules
-- Both depend on abstractions
-- Repository pattern ready for implementation
+- Clear separation of concerns
+- Domain-centric design
+- Low coupling between layers
+- Easy extensibility and refactoring
 
-</td>
-</tr>
-</table>
+---
+
+## 🧬 Domain Model & Object-Oriented Design
 
 ### Class Hierarchy
 
 ```
-                    Account (Abstract)
-                         |
-        +----------------+----------------+
-        |                                 |
-CheckingAccount                    SavingsAccount
-    |                                     |
-    +- overdraftLimit                     +- interestRate
-    +- withdraw()                         +- calculateInterest()
-    +- deposit()                          +- withdraw()
-                                          +- deposit()
+Account (Base Class)
+├── CheckingAccount
+└── SavingsAccount
 ```
 
-### Project Structure
+### Design Principles Applied
 
-```
-generation_project_01_typescript_bank_account/
-├── src/
-│   ├── model/
-│   │   ├── Account.ts              # Abstract base class
-│   │   ├── CheckingAccount.ts      # Checking account implementation
-│   │   └── SavingsAccount.ts       # Savings account implementation
-│   ├── controller/
-│   │   └── AccountController.ts    # Business logic controller
-│   ├── repository/
-│   │   └── AccountRepository.ts    # Data access layer (interface)
-│   ├── util/
-│   │   ├── Colors.ts               # Console color utilities
-│   │   └── Validators.ts           # Input validation helpers
-│   └── interfaces/
-│       └── IAccountRepository.ts   # Repository interface definition
-├── Menu.ts                          # Main application entry point
-├── package.json                     # Dependencies and scripts
-├── tsconfig.json                    # TypeScript configuration
-└── README.md                        # Project documentation
-```
+- **Encapsulation**: Account state and balance updates are controlled internally
+- **Inheritance**: Specialized account types extend a shared base class
+- **Polymorphism**: Controllers and repositories interact with abstractions
+- **Single Responsibility Principle**: Each class has a focused purpose
 
-### Core Components
-
-#### 📦 Model Layer
-
-**Account (Abstract Class)**
-```typescript
-abstract class Account {
-  // Core properties
-  private accountNumber: number;
-  private agency: number;
-  protected balance: number;
-  private type: number;
-  private holder: string;
-
-  // Abstract methods enforcing implementation
-  abstract withdraw(amount: number): boolean;
-  abstract deposit(amount: number): void;
-  
-  // Concrete shared methods
-  public checkBalance(): number;
-  public displayAccountInfo(): void;
-}
-```
-
-**CheckingAccount**
-```typescript
-class CheckingAccount extends Account {
-  private overdraftLimit: number;
-  
-  // Specialized withdrawal with overdraft
-  public withdraw(amount: number): boolean {
-    // Implementation with overdraft logic
-  }
-}
-```
-
-**SavingsAccount**
-```typescript
-class SavingsAccount extends Account {
-  private interestRate: number;
-  
-  // Interest calculation
-  public calculateInterest(): void {
-    // Compound interest implementation
-  }
-  
-  // Restricted withdrawal
-  public withdraw(amount: number): boolean {
-    // Implementation with restrictions
-  }
-}
-```
-
-#### 🎮 Controller Layer
-
-**AccountController**
-- Manages all business operations
-- Validates transactions
-- Coordinates between UI and data layer
-- Handles error scenarios
-- Implements repository pattern interface
-
-```typescript
-class AccountController {
-  private accounts: Map<number, Account>;
-  
-  // CRUD Operations
-  public createAccount(account: Account): void;
-  public findAccount(accountNumber: number): Account | undefined;
-  public listAllAccounts(): void;
-  public updateAccount(account: Account): void;
-  public deleteAccount(accountNumber: number): boolean;
-  
-  // Financial Operations
-  public withdraw(accountNumber: number, amount: number): boolean;
-  public deposit(accountNumber: number, amount: number): boolean;
-  public transfer(from: number, to: number, amount: number): boolean;
-}
-```
-
-#### 🖥️ View Layer (Menu System)
-
-**Interactive CLI Menu**
-- Clean, organized menu structure
-- Input validation at UI level
-- Colorized output for better UX
-- Confirmation dialogs for destructive operations
-- Help system and operation guides
+This design mirrors patterns found in **real-world banking and fintech systems**.
 
 ---
 
-## 🚀 Installation
+## ✨ Core Features
+
+- Create bank accounts
+- Support for multiple account types:
+  - Checking accounts
+  - Savings accounts
+- Deposit funds
+- Withdraw funds with domain validation
+- Retrieve and display account balances
+- In-memory persistence via repository pattern
+
+---
+
+## 📁 Project Structure (Detailed)
+
+The structure below reflects the **actual layout of the project**, directly matching the contents of the ZIP file:
+
+```
+src/
+├── model/
+│   ├── Account.ts              # Base domain entity with shared banking logic
+│   ├── CheckingAccount.ts      # Checking account specialization
+│   └── SavingsAccount.ts       # Savings account specialization
+│
+├── controller/
+│   └── AccountController.ts    # Orchestrates CLI commands and use cases
+│
+├── repository/
+│   └── AccountRepository.ts    # In-memory persistence abstraction
+│
+├── util/
+│   └── Colors.ts               # CLI output formatting utilities
+│
+└── index.ts                    # Application entry point and main menu loop
+```
+
+### Structural Rationale
+
+- **model/**
+  - Represents the banking domain
+  - Encapsulates balance rules and account behavior
+  - Avoids anemic domain models
+
+- **controller/**
+  - Acts as the application service layer
+  - Coordinates user input with domain operations
+
+- **repository/**
+  - Abstracts persistence concerns
+  - Enables future migration to databases or external services
+
+- **util/**
+  - Centralizes cross-cutting CLI concerns
+
+- **index.ts**
+  - Serves as the composition root
+  - Wires together controllers, repositories, and the CLI flow
+
+This organization mirrors patterns used in **enterprise financial software**.
+
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
-Ensure you have the following installed:
+- Node.js 18+
+- npm
+
+### Installation
 
 ```bash
-node >= 18.0.0
-npm >= 9.0.0  or  yarn >= 1.22.0
-typescript >= 5.0.0
-```
-
-### Quick Start
-
-#### 1. Clone the Repository
-
-```bash
-git clone https://github.com/RayRibeirost/generation_project_01_typescript_bank_account.git
-cd generation_project_01_typescript_bank_account
-```
-
-#### 2. Install Dependencies
-
-```bash
-# Using npm
 npm install
-
-# Or using yarn
-yarn install
 ```
 
-#### 3. Build the Project
+### Running the Application
 
 ```bash
-# Compile TypeScript to JavaScript
-npm run build
-
-# Or using yarn
-yarn build
+npm run start
 ```
 
-#### 4. Run the Application
-
-```bash
-# Run the compiled JavaScript
-npm start
-
-# Or using yarn
-yarn start
-
-# Alternative: Run with ts-node (development)
-npm run dev
-```
-
-### Development Mode
-
-For hot-reload during development:
-
-```bash
-# Watch mode with auto-recompilation
-npm run dev:watch
-
-# Or using yarn
-yarn dev:watch
-```
+The application launches an interactive CLI menu for managing bank accounts.
 
 ---
 
-## 💻 Usage
+## 🛠️ Technical Decisions
 
-### Main Menu Navigation
+- **TypeScript** for type safety and maintainability
+- **CLI interface** to emphasize domain logic
+- **Repository pattern** to decouple persistence from business rules
+- **Minimal dependencies** to highlight core engineering skills
 
-Upon launching the application, you'll see the main menu:
-
-```
-╔════════════════════════════════════════╗
-║        GENERATION BANK SYSTEM          ║
-╚════════════════════════════════════════╝
-
-[1] Create Account
-[2] List All Accounts
-[3] Find Account by Number
-[4] Update Account
-[5] Delete Account
-[6] Withdraw
-[7] Deposit
-[8] Transfer
-[9] Check Balance
-[0] Exit
-
-Choose an option:
-```
-
-### Complete Operation Guide
-
-#### 🆕 Creating an Account
-
-1. Select option **[1] Create Account**
-2. Choose account type:
-   - `1` - Checking Account
-   - `2` - Savings Account
-3. Enter account details:
-   - Account holder name
-   - Initial deposit amount
-   - Agency number
-4. For **Savings Account**, additionally provide:
-   - Interest rate (annual percentage)
-5. For **Checking Account**, optionally set:
-   - Overdraft limit
-
-**Example Flow:**
-```
-Choose account type:
-1 - Checking Account
-2 - Savings Account
-> 2
-
-Enter account holder name: John Doe
-Enter initial deposit: 1000.00
-Enter agency number: 001
-Enter interest rate (%): 2.5
-
-✓ Savings Account created successfully!
-Account Number: 1001
-```
-
-#### 🔍 Finding an Account
-
-1. Select option **[3] Find Account by Number**
-2. Enter the account number
-3. View complete account details
-
-**Output Example:**
-```
-╔════════════════════════════════════════╗
-║          ACCOUNT DETAILS               ║
-╚════════════════════════════════════════╝
-
-Account Number: 1001
-Agency: 001
-Type: Savings Account
-Holder: John Doe
-Balance: $1,000.00
-Interest Rate: 2.5%
-```
-
-#### 💸 Performing Withdrawals
-
-1. Select option **[6] Withdraw**
-2. Enter account number
-3. Enter withdrawal amount
-4. Confirm operation
-5. System validates:
-   - Account exists
-   - Sufficient funds (or overdraft for checking)
-   - Amount is positive
-
-**Success:**
-```
-✓ Withdrawal successful!
-Previous Balance: $1,000.00
-Withdrawn: $200.00
-New Balance: $800.00
-```
-
-**Error Handling:**
-```
-✗ Insufficient funds!
-Available Balance: $800.00
-Requested: $900.00
-```
-
-#### 💰 Making Deposits
-
-1. Select option **[7] Deposit**
-2. Enter account number
-3. Enter deposit amount
-4. Confirm transaction
-
-**Success:**
-```
-✓ Deposit successful!
-Previous Balance: $800.00
-Deposited: $500.00
-New Balance: $1,300.00
-```
-
-#### 🔄 Transferring Between Accounts
-
-1. Select option **[8] Transfer**
-2. Enter source account number
-3. Enter destination account number
-4. Enter transfer amount
-5. Confirm operation
-6. System performs atomic transaction
-
-**Success:**
-```
-✓ Transfer completed successfully!
-
-From Account: 1001
-  Previous Balance: $1,300.00
-  New Balance: $800.00
-
-To Account: 1002
-  Previous Balance: $500.00
-  New Balance: $1,000.00
-
-Transferred: $500.00
-```
-
-#### 🔄 Updating Account Information
-
-1. Select option **[4] Update Account**
-2. Enter account number
-3. Enter new account holder name
-4. Confirm changes
-
-#### 🗑️ Deleting an Account
-
-1. Select option **[5] Delete Account**
-2. Enter account number
-3. **Warning**: Confirm account has zero balance
-4. Confirm deletion (irreversible)
-
-**Safety Check:**
-```
-⚠ Warning: This operation cannot be undone!
-
-Account Number: 1001
-Holder: John Doe
-Balance: $0.00
-
-Confirm deletion? (yes/no):
-```
+These decisions align with technical evaluations used by **international consultancies and fintech companies**.
 
 ---
 
-## 🛠️ Tech Stack
-
-### Core Technologies
-
-<table>
-<tr>
-<td align="center" width="50%">
-<img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" />
-<br />
-<sub><b>TypeScript 5.0+</b></sub>
-<br />
-<sub>Primary language with strict type checking</sub>
-</td>
-<td align="center" width="50%">
-<img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white" />
-<br />
-<sub><b>Node.js 18+</b></sub>
-<br />
-<sub>JavaScript runtime environment</sub>
-</td>
-</tr>
-</table>
-
-### Dependencies
-
-| Package | Version | Purpose |
-|---------|---------|---------|
-| **readline-sync** | ^1.4.10 | Synchronous command-line interface |
-| **colors** | ^1.4.0 | Terminal string styling and coloring |
-| **@types/node** | ^20.0.0 | TypeScript definitions for Node.js |
-| **@types/readline-sync** | ^1.4.4 | TypeScript definitions for readline-sync |
-| **ts-node** | ^10.9.0 | TypeScript execution engine |
-
-### Development Tools
-
-```json
-{
-  "compiler": "TypeScript Compiler (tsc)",
-  "runtime": "Node.js",
-  "build-tool": "npm scripts",
-  "linter": "TSLint/ESLint",
-  "formatter": "Prettier"
-}
-```
-
-### TypeScript Configuration Highlights
-
-```json
-{
-  "compilerOptions": {
-    "target": "ES2020",
-    "module": "commonjs",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "outDir": "./dist",
-    "rootDir": "./src"
-  }
-}
-```
-
----
-
-## 📚 API Documentation
-
-### Account Class (Abstract)
-
-Base class for all account types.
-
-#### Constructor
-```typescript
-constructor(
-  accountNumber: number,
-  agency: number,
-  type: number,
-  holder: string,
-  balance: number
-)
-```
-
-#### Abstract Methods
-```typescript
-abstract withdraw(amount: number): boolean
-abstract deposit(amount: number): void
-```
-
-#### Public Methods
-```typescript
-public getAccountNumber(): number
-public getAgency(): number
-public getType(): number
-public getHolder(): string
-public getBalance(): number
-public setHolder(holder: string): void
-public displayAccountInfo(): void
-```
-
-### CheckingAccount Class
-
-Extends Account with overdraft functionality.
-
-#### Constructor
-```typescript
-constructor(
-  accountNumber: number,
-  agency: number,
-  holder: string,
-  balance: number,
-  overdraftLimit: number
-)
-```
-
-#### Unique Methods
-```typescript
-public getOverdraftLimit(): number
-public setOverdraftLimit(limit: number): void
-public withdraw(amount: number): boolean // Overdraft-aware
-```
-
-### SavingsAccount Class
-
-Extends Account with interest calculation.
-
-#### Constructor
-```typescript
-constructor(
-  accountNumber: number,
-  agency: number,
-  holder: string,
-  balance: number,
-  interestRate: number
-)
-```
-
-#### Unique Methods
-```typescript
-public getInterestRate(): number
-public setInterestRate(rate: number): void
-public calculateInterest(): number
-public applyInterest(): void
-public withdraw(amount: number): boolean // May have restrictions
-```
-
-### AccountController Class
-
-Manages all account operations.
-
-#### Public Methods
-```typescript
-public createAccount(account: Account): void
-public findAccount(accountNumber: number): Account | undefined
-public listAllAccounts(): Account[]
-public updateAccount(accountNumber: number, newHolder: string): boolean
-public deleteAccount(accountNumber: number): boolean
-public withdraw(accountNumber: number, amount: number): boolean
-public deposit(accountNumber: number, amount: number): boolean
-public transfer(fromAccount: number, toAccount: number, amount: number): boolean
-public checkBalance(accountNumber: number): number | undefined
-```
-
----
-
-## 🧪 Testing
-
-### Running Tests (Future Implementation)
-
-```bash
-# Run all tests
-npm test
-
-# Run tests with coverage
-npm run test:coverage
-
-# Run tests in watch mode
-npm run test:watch
-```
-
-### Test Structure (Planned)
-
-```
-tests/
-├── unit/
-│   ├── Account.test.ts
-│   ├── CheckingAccount.test.ts
-│   ├── SavingsAccount.test.ts
-│   └── AccountController.test.ts
-├── integration/
-│   ├── TransactionFlow.test.ts
-│   └── AccountManagement.test.ts
-└── e2e/
-    └── MenuNavigation.test.ts
-```
-
-### Test Coverage Goals
-
-- **Unit Tests**: > 90% coverage
-- **Integration Tests**: All critical transaction flows
-- **Edge Cases**: Negative amounts, overdraft limits, transfer validations
-
----
-
-## 🔒 Security Considerations
-
-### Current Implementation
-
-- ✅ Input validation for all operations
-- ✅ Type safety preventing runtime errors
-- ✅ Balance validation before transactions
-- ✅ Atomic transfer operations (all-or-nothing)
-
-### Future Enhancements
-
-- 🔐 User authentication and authorization
-- 🔑 Encrypted data storage
-- 📝 Audit logging for all transactions
-- 🛡️ Rate limiting for operations
-- 🔒 Session management
-- 🔐 Password hashing for account access
-
----
-
-## 🚀 Future Roadmap
-
-### Phase 1: Data Persistence
-- [ ] SQLite database integration
-- [ ] PostgreSQL support for production
-- [ ] Transaction history tracking
-- [ ] Account statement generation
-
-### Phase 2: Advanced Features
-- [ ] Loan accounts
-- [ ] Fixed deposit accounts
-- [ ] Recurring deposits
-- [ ] Standing instructions
-- [ ] Card management
-
-### Phase 3: Security & Compliance
-- [ ] Multi-factor authentication
-- [ ] Encryption at rest and in transit
-- [ ] Compliance with banking regulations
-- [ ] Audit trail system
-
-### Phase 4: API & Integration
-- [ ] RESTful API implementation
-- [ ] GraphQL endpoint
-- [ ] Webhook support
-- [ ] Third-party integrations
-
-### Phase 5: User Interface
-- [ ] Web-based dashboard
-- [ ] Mobile application
-- [ ] Email notifications
-- [ ] SMS alerts
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! This project follows standard open-source contribution guidelines.
-
-### How to Contribute
-
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/AmazingFeature`)
-3. **Commit** your changes (`git commit -m 'Add some AmazingFeature'`)
-4. **Push** to the branch (`git push origin feature/AmazingFeature`)
-5. **Open** a Pull Request
-
-### Development Guidelines
-
-- Follow TypeScript best practices
-- Maintain strict type checking
-- Write unit tests for new features
-- Update documentation
-- Follow existing code style
-- Use meaningful commit messages
-
-### Code Style
-
-```typescript
-// Use PascalCase for classes
-class BankAccount { }
-
-// Use camelCase for methods and variables
-public calculateInterest(): number { }
-
-// Use UPPER_CASE for constants
-const MAX_WITHDRAWAL_LIMIT = 10000;
-
-// Always specify return types
-public getBalance(): number {
-  return this.balance;
-}
-```
-
----
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-```
-MIT License
-
-Copyright (c) 2024 Ray Ribeiro
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files...
-```
+## 🔄 Extensibility & Future Improvements
+
+This project was intentionally designed to be extensible. Potential improvements include:
+
+- Persistent storage (SQL / NoSQL)
+- Transaction history and audit logs
+- Automated tests (unit and integration)
+- REST or GraphQL API exposure
+- Authentication and authorization
+- Dockerization and CI/CD pipelines
 
 ---
 
 ## 👤 Author
 
-**Ray Ribeiro**
+**Raylander Ribeiro**  
+Software Engineer
 
-- GitHub: [@RayRibeirost](https://github.com/RayRibeirost)
-- LinkedIn: [Connect with me](https://linkedin.com/in/RayRibeirost)
-- Email: ray.ribeiro@example.com
-- Portfolio: [rayribeiro.dev](https://rayribeiro.dev)
-
----
-
-## 🙏 Acknowledgments
-
-- **Generation Brasil**: For the comprehensive bootcamp program
-- **TypeScript Community**: For excellent documentation and tooling
-- **Open Source Contributors**: For inspiration and best practices
-- **Banking Domain Experts**: For insights into financial system design
+- Focus: Backend Development & Software Architecture
+- Interests: Financial systems, clean code, domain-driven design
 
 ---
 
-## 📚 Learning Resources
+## 📄 License
 
-### TypeScript & OOP
-- [TypeScript Official Documentation](https://www.typescriptlang.org/docs/)
-- [Design Patterns in TypeScript](https://refactoring.guru/design-patterns/typescript)
-- [Clean Code JavaScript/TypeScript](https://github.com/ryanmcdermott/clean-code-javascript)
-
-### Banking Systems
-- [Banking Domain Modeling](https://martinfowler.com/eaaDev/AccountingNarrative.html)
-- [Financial Transaction Systems](https://www.amazon.com/Domain-Driven-Design-Tackling-Complexity-Software/dp/0321125215)
-
-### SOLID Principles
-- [SOLID Principles Explained](https://www.digitalocean.com/community/conceptual_articles/s-o-l-i-d-the-first-five-principles-of-object-oriented-design)
-- [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+This project is licensed under the MIT License.
 
 ---
 
-## 📞 Support & Feedback
-
-### Get Help
-
-- 📧 **Email**: ray.ribeiro@example.com
-- 💬 **Issues**: [Open an issue](https://github.com/RayRibeirost/generation_project_01_typescript_bank_account/issues)
-- 📖 **Wiki**: [Project Wiki](https://github.com/RayRibeirost/generation_project_01_typescript_bank_account/wiki)
-- 💼 **Discussions**: [GitHub Discussions](https://github.com/RayRibeirost/generation_project_01_typescript_bank_account/discussions)
-
-### Reporting Bugs
-
-When reporting bugs, please include:
-- TypeScript version
-- Node.js version
-- Operating system
-- Steps to reproduce
-- Expected vs actual behavior
-- Error messages or stack traces
-
----
-
-## 📊 Project Statistics
-
-```
-Language: TypeScript 100%
-Total Lines of Code: ~1,500
-Classes: 5+
-Interfaces: 3+
-Methods: 40+
-Development Time: 2 weeks
-Code Quality: A+
-```
-
----
-
-<div align="center">
-
-### ⭐ Star this repository if you find it helpful!
-
-**Built with 💙 by Ray Ribeiro**
-
-*Demonstrating enterprise-level TypeScript and OOP principles*
-
-[Report Bug](https://github.com/RayRibeirost/generation_project_01_typescript_bank_account/issues) · [Request Feature](https://github.com/RayRibeirost/generation_project_01_typescript_bank_account/issues) · [Documentation](https://github.com/RayRibeirost/generation_project_01_typescript_bank_account/wiki)
-
-</div>
+> 💡 **Recruiter Note**: This project demonstrates solid architectural reasoning, Object-Oriented design, and domain modeling — skills that scale directly to enterprise banking and fintech systems.
