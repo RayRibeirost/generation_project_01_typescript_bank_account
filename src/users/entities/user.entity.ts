@@ -1,0 +1,45 @@
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { IsNotEmpty, IsEmail } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+
+@Entity({ name: 'users_tb' })
+export class Users {
+  @PrimaryGeneratedColumn('uuid')
+  @ApiProperty()
+  id: string;
+
+  @IsNotEmpty()
+  @Column({ nullable: false })
+  @ApiProperty()
+  name: string;
+
+  @IsNotEmpty()
+  @IsEmail()
+  @Column({ nullable: false, unique: true })
+  @ApiProperty()
+  email: string;
+
+  @IsNotEmpty()
+  @Column({ nullable: false, select: false })
+  @ApiProperty()
+  password: string;
+
+  @CreateDateColumn()
+  @ApiProperty()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  @ApiProperty()
+  updatedAt: Date;
+
+  @OneToMany(() => Accounts, (account) => account.user)
+  @ApiProperty()
+  accounts: Accounts[];
+}
