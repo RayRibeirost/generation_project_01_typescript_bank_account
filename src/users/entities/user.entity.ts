@@ -9,7 +9,7 @@ import {
 import { IsNotEmpty, IsEmail } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-@Entity({ name: 'users_tb' })
+@Entity({ name: 'tb_users' })
 export class Users {
   @PrimaryGeneratedColumn('uuid')
   @ApiProperty()
