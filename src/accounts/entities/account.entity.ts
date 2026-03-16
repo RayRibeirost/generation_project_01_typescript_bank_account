@@ -17,6 +17,7 @@ import {
   IsNotEmpty,
   IsNumber,
 } from 'class-validator';
+import { Transactions } from '../../transactions/entities/transaction.entity';
 
 @Entity('tb_accounts')
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
