@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { IsNotEmpty, IsEmail } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Accounts } from '../../accounts/entities/account.entity';
 
 @Entity({ name: 'tb_users' })
 export class Users {

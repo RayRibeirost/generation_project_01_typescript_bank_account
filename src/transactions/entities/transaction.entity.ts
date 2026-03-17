@@ -17,8 +17,8 @@ export class Transactions {
   id: string;
 
   @ApiProperty()
-  @IsEnum()
-  @Column({ type: 'enum' })
+  @IsEnum(TransactionType)
+  @Column({ type: 'enum', enum: TransactionType })
   type: TransactionType;
 
   @ApiProperty()

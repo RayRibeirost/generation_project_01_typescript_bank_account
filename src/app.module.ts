@@ -3,12 +3,35 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Users } from './users/entities/user.entity';
+import { Accounts } from './accounts/entities/account.entity';
+import { CheckingAccounts } from './accounts/entities/checking-account.entity';
+import { SavingsAccounts } from './accounts/entities/savings-account.entity';
+import { Transactions } from './transactions/entities/transaction.entity';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRootAsync({
-      useFactory: ConfigService,
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get<string>('DATABASE_HOST'),
+        port: configService.get<number>('DATABASE_PORT'),
+        username: configService.get<string>('DATABASE_USER'),
+        password: configService.get<string>('DATABASE_PASSWORD'),
+        database: configService.get<string>('DATABASE_NAME'),
+        entities: [
+          Users,
+          Accounts,
+          CheckingAccounts,
+          SavingsAccounts,
+          Transactions,
+        ],
+        synchronize: true,
+      }),
+      inject: [ConfigService],
     }),
   ],
   controllers: [AppController],
