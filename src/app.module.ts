@@ -9,6 +9,7 @@ import { Transactions } from './transactions/entities/transaction.entity';
 import { UsersModule } from './users/users.module';
 import { AccountsModule } from './accounts/accounts.module';
 import { TransactionsModule } from './transactions/transactions.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { TransactionsModule } from './transactions/transactions.module';
           CheckingAccounts,
           SavingsAccounts,
           Transactions,
+          AuthModule,
         ],
         synchronize: true,
       }),
