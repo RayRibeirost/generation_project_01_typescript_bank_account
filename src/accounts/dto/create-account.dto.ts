@@ -20,7 +20,7 @@ export class CreateAccountDto {
   @ApiProperty({ example: 'John Doe' })
   @IsString()
   @IsNotEmpty()
-  accountHolder: number;
+  accountHolder: string;
 
   @ApiProperty({ example: 500, required: false })
   @IsNumber()

@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Users } from './users/entities/user.entity';
@@ -8,6 +6,9 @@ import { Accounts } from './accounts/entities/account.entity';
 import { CheckingAccounts } from './accounts/entities/checking-account.entity';
 import { SavingsAccounts } from './accounts/entities/savings-account.entity';
 import { Transactions } from './transactions/entities/transaction.entity';
+import { UsersModule } from './users/users.module';
+import { AccountsModule } from './accounts/accounts.module';
+import { TransactionsModule } from './transactions/transactions.module';
 
 @Module({
   imports: [
@@ -33,8 +34,9 @@ import { Transactions } from './transactions/entities/transaction.entity';
       }),
       inject: [ConfigService],
     }),
+    UsersModule,
+    AccountsModule,
+    TransactionsModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
