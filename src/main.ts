@@ -6,10 +6,14 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.PORT ?? 3000);
-  app.useGlobalPipes(new ValidationPipe());
   app.use(helmet());
-  app.enableCors();
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    }),
+  );
 
   const config = new DocumentBuilder()
     .setTitle('Bank Account API - Raylander Ribeiro - rayribeirost')
@@ -26,6 +30,14 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('/docs', app, document);
+  SwaggerModule.setup('api/docs', app, document);
+
+  await app.listen(process.env.PORT ?? 3000);
+  console.log(
+    `Application running at: http://localhost:${process.env.PORT ?? 3000}`,
+  );
+  console.log(
+    `Swagger available at at: http://localhost:${process.env.PORT ?? 3000}/api/docs`,
+  );
 }
 bootstrap();
