@@ -22,6 +22,11 @@ export class CreateTransactionDto {
   @IsNotEmpty()
   amount: number;
 
+  @ApiProperty({ example: 'origin-account-uuid' })
+  @IsUUID()
+  @IsNotEmpty()
+  accountId: string;
+
   @ApiProperty({ example: 'related-account-uuid', required: false })
   @IsUUID()
   @IsOptional()
