@@ -5,6 +5,7 @@ import { CheckingAccounts } from './entities/checking-account.entity';
 import { SavingsAccounts } from './entities/savings-account.entity';
 import { UsersModule } from '../users/users.module';
 import { AccountsService } from './services/accounts.service';
+import { AccountsController } from './controllers/accounts.controller';
 
 @Module({
   imports: [
@@ -13,5 +14,6 @@ import { AccountsService } from './services/accounts.service';
   ],
   providers: [AccountsService],
   exports: [AccountsService],
+  controllers: [AccountsController],
 })
 export class AccountsModule {}
