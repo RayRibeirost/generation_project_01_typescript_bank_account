@@ -30,7 +30,6 @@ import { AuthModule } from './auth/auth.module';
           CheckingAccounts,
           SavingsAccounts,
           Transactions,
-          AuthModule,
         ],
         synchronize: true,
       }),
@@ -39,6 +38,7 @@ import { AuthModule } from './auth/auth.module';
     UsersModule,
     AccountsModule,
     TransactionsModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
