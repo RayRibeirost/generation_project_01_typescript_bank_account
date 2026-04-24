@@ -1,6 +1,28 @@
-services:
+services: 
+  api:
+    build:
+      context: .
+      target: production
+    container_name: bank_api
+    restart: unless-stopped
+    ports:
+      - '3000: 3000'
+    environment:
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_NAME: ${DATABASE_NAME}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - bank_network
+
   postgres:
-    image: postgres:18.3-alpine
+    image: postgres:18-alpine
     container_name: bank_postgres
     restart: unless-stopped
     environment:
@@ -11,9 +33,14 @@ services:
       - '5433:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg-isready -U ${DATABASE_USER}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - bank_network
-    
+  
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: bank_pgadmin
@@ -27,7 +54,7 @@ services:
       - postgres
     networks:
       - bank_network
-    
+
 volumes:
   postgres_data:
 
