@@ -28,7 +28,11 @@ data "aws_ami" "ubuntu" {
     owners = ["099720109477"]
     filter {
         name = "name"
-        values = ["ubuntu/images/hvm-ssd/ubuntu-22.04-amd64-server-*"]
+        values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+    }
+    filter {
+        name = "virtualization-type"
+        values = ["hvm"]
     }
 }
 
@@ -69,7 +73,7 @@ resource "aws_subnet" "private_1" {
 }
 
 resource "aws_subnet" "private_2" {
-    vpc_is = aws_vpc.main.id
+    vpc_id = aws_vpc.main.id
     cidr_block = "10.0.3.0/24"
     availability_zone = data.aws_availability_zones.available.names[1]
     tags = {
@@ -137,9 +141,9 @@ resource "aws_security_group" "rds" {
         to_port = 0 
         protocol = "-1"
         cidr_blocks = ["0.0.0.0/0"]
-        tags = {
-            Name = "${var.project_name}-sg-rds"
-        }
+    }
+    tags = {
+        Name = "${var.project_name}-sg-rds"
     }
 }
 
@@ -171,9 +175,14 @@ resource "aws_db_instance" "postgres" {
     }
 }
 
+resource "tls_private_key" "private_key" {
+  algorithm = "RSA"
+  rsa_bits = 4096
+}
+
 resource "aws_key_pair" "deployer" {
   key_name = "${var.project_name}-key"
-  public_key = file("~/.ssh/id_rsa.pub")
+  public_key = tls_private_key.private_key.public_key_openssh
 }
 
 resource "aws_instance" "api" {

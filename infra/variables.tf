@@ -4,7 +4,7 @@ variable "aws_region" {
   default = "us-east-1"
 }
 
-variable "project-name" {
+variable "project_name" {
     description = "Project Name, prefix of all resources"
     type = string
     default = "bank-account"
