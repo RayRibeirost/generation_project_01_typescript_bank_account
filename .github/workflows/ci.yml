@@ -84,7 +84,7 @@ jobs:
     needs: build
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
-      - name: Validar infraestrutura AWS
+      - name: Validate AWS Infrastructure
         run: |
           pip install boto3
           python scripts/infra_check.py
