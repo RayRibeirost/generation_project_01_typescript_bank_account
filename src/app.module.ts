@@ -10,6 +10,7 @@ import { UsersModule } from './users/users.module';
 import { AccountsModule } from './accounts/accounts.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { AuthModule } from './auth/auth.module';
+import { HealthController } from './common/health/health.controller';
 
 @Module({
   imports: [
@@ -40,5 +41,6 @@ import { AuthModule } from './auth/auth.module';
     TransactionsModule,
     AuthModule,
   ],
+  controllers: [HealthController],
 })
 export class AppModule {}

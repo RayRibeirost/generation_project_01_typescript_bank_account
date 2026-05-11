@@ -1,0 +1,42 @@
+{
+    "agent": {
+        "metrics_collection_interval": 60,
+        "run_as_user": "root"
+    },
+    "logs": {
+        "logs_collected": {
+            "files" : {
+                "collect_list": [
+                    {
+                        "file_path": "/var/lib/docker/containers/**/*-json.log",
+                        "log_group_name": "/bank-account/api/prod",
+                        "log_stream_name": "{instance_id}",
+                        "timezone": "UTC",
+                        "multi_line_start_pattern": "^{"
+                    }
+                ]
+            }
+        }
+    },
+    "metrics": {
+        "metrics_collected": {
+            "cpu": {
+                "measurement": ["cpu_usage_idle", "cpu_usage_user", "cpu_usage_system"],
+                "metrics_collection_interval": 60
+            },
+            "mem": {
+                "measurement": ["mem_used_percent"],
+                "metrics_collection_interval": 60
+            },
+            "disk": {
+                "measurement": ["used_percent"],
+                "metrics_collection_interval": 60,
+                "resources": ["/"]
+            }
+        },
+        "append_dimensions": {
+            "InstanceId": "${aws:InstanceId}",
+            "Environment": "prod"
+        }
+    }
+}
