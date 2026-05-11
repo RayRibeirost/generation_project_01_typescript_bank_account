@@ -1,103 +1,107 @@
 name: CI/CD Pipeline
 on:
-    push:
-        branches: [ main ]
-    pull_request:
-        branches: [ main ]
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
-    test:
-        name: Test
-        runs-on: ubuntu-latest
-        services:
-            postgres:
-                image: postgres:18-alpine
-                env:
-                    POSTGRES_USER: postgres
-                    POSTGRES_PASSWORD: postgres
-                    POSTGRES_DB: bankdb_test
-                ports:
-                    - 5432:5432
-                options: >-
-                    --health-cmd pg_isready -U postgres
-                    --health-interval 10s
-                    --health-timeout 5s
-                    --health-retries 5
-        steps:
-          - name: Code Checkout
-            uses: actions/checkout@v4
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: bankdb_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready -U postgres
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v4
 
-          - name: Setup Node.js
-            uses: actions/setup-node@v6
-            with:
-                node-version: '20'
-                cache: 'npm'
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "20"
+          cache: "npm"
 
-          - name: Install dependencies
-            run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-          - name: Check TypeScript Types
-            run: npx tsc --noEmit
+      - name: Check TypeScript Types
+        run: npx tsc --noEmit
 
-          - name: Run Lint
-            run: npm run lint
+      - name: Run Lint
+        run: npm run lint
 
-          - name: run tests
-            run: npm test
-            env:
-                DATABASE_HOST: localhost
-                DATABASE_PORT: 5432
-                DATABASE_USER: postgres
-                DATABASE_PASSWORD: postgres
-                DATABASE_NAME: bankdb_test
-                JWT_SECRET: test_secret_for_ci_only
-                JWT_EXPIRES_IN: 1d
+      - name: run tests
+        run: npm test
+        env:
+          DATABASE_HOST: localhost
+          DATABASE_PORT: 5432
+          DATABASE_USER: postgres
+          DATABASE_PASSWORD: postgres
+          DATABASE_NAME: bankdb_test
+          JWT_SECRET: test_secret_for_ci_only
+          JWT_EXPIRES_IN: 1d
 
-    build:
-        name: Build & Push Docker Image
-        runs-on: ubuntu-latest
-        needs: test
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        steps:
-          - name: Code Checkout
-            uses: actions/checkout@v4
-          - name: Setup Buildx
-            uses: docker/setup-buildx-action@v3
-          - name: Docker Hub Login
-            uses: docker/login-action@v1
-            with:
-                username: ${{ secrets.DOCKERHUB_USERNAME }}
-                password: ${{ secrets.DOCKERHUB_TOKEN }}
-          - name: Image Push and Build
-            uses: docker/build-push-action@v6
-            with:
-                context: .
-                target: production
-                push: true
-                tags: |
-                    ${{ secrets.DOCKERHUB_USERNAME }}/bank-account-api:latest
-                    ${{ secrets.DOCKERHUB_USERNAME }}/bank-account-api:${{ github.sha }}
+  build:
+    name: Build & Push Docker Image
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v4
+      - name: Setup Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Docker Hub Login
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Image Push and Build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          target: production
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/bank-account-api:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/bank-account-api:${{ github.sha }}
 
-    deploy:
-        name: Deploy to AWS EC2
-        runs-on: ubuntu-latest
-        needs: build
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        steps:
-          - name: SSH deploy
-            uses: appleboy/ssh-action@v1.0.3
-            with: 
-                host: ${{ secrets.EC2_HOST }}
-                username: ubuntu
-                key: ${{ secrets.EC2_SSH_KEY }}
-                script: |
-                    cd /app
-                    docker pull ${{ secrets.DOCKERHUB_USERNAME }}/bank-account-api:latest
-                    docker compose down
-                    docker compose up -d
-                    docker system prune -f
-
-
-
-
-
+  deploy:
+    name: Deploy to AWS EC2
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Validar infraestrutura AWS
+        run: |
+          pip install boto3
+          python scripts/infra_check.py
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-east-1
+      - name: SSH deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /app
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/bank-account-api:latest
+            docker compose down
+            docker compose up -d
+            docker system prune -f
+      
